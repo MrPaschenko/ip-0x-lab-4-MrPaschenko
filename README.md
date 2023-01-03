@@ -1,1 +1,31 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-c66648af7eb3fe8bc4f294546bfd86ef473780cde1dea487d3c4ff354943c9ae.svg)](https://classroom.github.com/online_ide?assignment_repo_id=9678252&assignment_repo_type=AssignmentRepo)
+# Lab 4
+
+## Download & Run
+
+1. Clone this repository
+
+```bash
+git clone https://github.com/future-stardust/ip-0x-lab-4-MrPaschenko
+```
+
+2. Install necessary packages
+
+```bash
+npm i
+```
+
+3. Run program
+
+```bash
+node communication input.txt
+```
+
+4. Run tests
+
+```bash
+npm test
+```
+
+>Dmytro Pashchenko, IP-04
+
+>Пащенко Дмитро Олексійович, ІП-04
