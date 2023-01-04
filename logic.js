@@ -80,7 +80,6 @@ function getFinalField(field) {
 }
 
 function getOutput(field) {
-  field = getFinalField(field);
   const newArray = [];
   for (let i = 0; i < field.height; i++) {
     newArray.push([]);

@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const { getOutput, Field, getFigure, getLandscape } = require('./logic');
+const { getOutput, Field, getFigure, getLandscape, getFinalField} = require('./logic');
 const { writeOutput, parseInput } = require('./inputOutput');
 
 function execute(args, fileSystem, output) {
@@ -41,7 +41,8 @@ function execute(args, fileSystem, output) {
       getLandscape(parsedContent.array)
     );
 
-    const finalFieldString = getOutput(field);
+    const finalField = getFinalField(field)
+    const finalFieldString = getOutput(finalField);
 
     output.showResult(finalFieldString);
     writeOutput(finalFieldString);
