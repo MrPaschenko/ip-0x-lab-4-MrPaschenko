@@ -2,10 +2,18 @@
 
 const fs = require('fs');
 
-const { getOutput, Field, getFigure, getLandscape, getFinalField} = require('./logic');
+const {
+  getOutput,
+  Field,
+  getFigure,
+  getLandscape,
+  getStepsNum,
+  move,
+  getFinalField
+} = require('./logic');
 const { writeOutput, parseInput } = require('./inputOutput');
 
-function execute(args, fileSystem, output) {
+function execute(args, fileSystem, output, withSteps) {
   const regEx = /^.+\.txt$/;
   if (!args) {
     output.showResult('Run communication.js together with .txt file name');
@@ -33,6 +41,30 @@ function execute(args, fileSystem, output) {
 
   if (isError) {
     output.showResult(isError);
+  } else if (withSteps === 'steps') {
+    const fieldOne = new Field(
+      parsedContent.width,
+      parsedContent.height,
+      getFigure(parsedContent.array),
+      getLandscape(parsedContent.array)
+    );
+
+    const fieldTwo = new Field(
+      parsedContent.width,
+      parsedContent.height,
+      getFigure(parsedContent.array),
+      getLandscape(parsedContent.array)
+    );
+
+    const stepsNum = getStepsNum(fieldOne, fieldTwo);
+
+    output.showResult('STEP 0');
+    output.showResult(getOutput(fieldOne));
+
+    for (let i = 0; i < stepsNum; i++) {
+      output.showResult(`STEP ${i + 1}`);
+      output.showResult(getOutput(move(fieldOne)));
+    }
   } else {
     const field = new Field(
       parsedContent.width,
@@ -41,7 +73,7 @@ function execute(args, fileSystem, output) {
       getLandscape(parsedContent.array)
     );
 
-    const finalField = getFinalField(field)
+    const finalField = getFinalField(field);
     const finalFieldString = getOutput(finalField);
 
     output.showResult(finalFieldString);
@@ -64,6 +96,6 @@ const output = {
   }
 };
 
-execute(process.argv[2], fileSystem, output);
+execute(process.argv[2], fileSystem, output, process.argv[3]);
 
 module.exports = { execute };

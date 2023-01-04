@@ -102,4 +102,24 @@ function getOutput(field) {
   return newArray.join('\n');
 }
 
-module.exports = { Dot, Field, getFigure, getLandscape, move, getFinalField, getOutput };
+function getStepsNum(fieldOne, fieldTwo) {
+  const fieldOneY = fieldOne.figure[0].y;
+  let fieldTwoY = fieldTwo.figure[0].y;
+
+  for (let i = 0; i < fieldTwo.height; i++) {
+    fieldTwoY = move(fieldTwo).figure[0].y;
+  }
+
+  return fieldTwoY - fieldOneY;
+}
+
+module.exports = {
+  Dot,
+  Field,
+  getFigure,
+  getLandscape,
+  move,
+  getFinalField,
+  getOutput,
+  getStepsNum
+};
