@@ -19,6 +19,10 @@ npm i
 ```bash
 node communication input.txt
 ```
+or
+```bash
+node communication input.txt steps
+```
 
 4. Run tests
 
