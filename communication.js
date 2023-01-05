@@ -98,4 +98,4 @@ const output = {
 
 execute(process.argv[2], fileSystem, output, process.argv[3]);
 
-module.exports = { execute };
+module.exports = { execute, fileSystem, output };

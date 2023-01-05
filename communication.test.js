@@ -1,93 +1,76 @@
 'use strict';
 
-const { execute } = require('./communication');
+const { execute, fileSystem, output } = require('./communication');
 
-let messages = [];
-const outputMock = {
-  showResult(msg) {
-    messages.push(msg);
-  }
-};
-
-const fileSystemDefaultMock = {
-  checkFile(filePath) {
-    throw new Error('checkFile() has been called unexpectedly');
-  },
-  readFile(filePath) {
-    throw new Error('readFile() has been called unexpectedly');
-  }
-};
-
-beforeEach(() => {
-  messages = [];
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 test('No arguments', () => {
   //When
-  execute(null, fileSystemDefaultMock, outputMock);
+  jest.spyOn(output, 'showResult')
+    .mockImplementation(msg => console.log(msg));
+
+  execute(null, fileSystem, output, null);
 
   //Then
+  const messages = output.showResult.mock.calls[0];
   expect(messages).toEqual(['Run communication.js together with .txt file name']);
 });
 
 test('File does not exist', () => {
-  //Mock
-  const fileSystemMock = {
-    checkFile(filePath) {
-      return false;
-    },
-    readFile(filePath) {
-      throw new Error('readFile() has been called unexpectedly');
-    }
-  };
-
   //When
-  execute(['', '', '123.txt'], fileSystemMock, outputMock);
+  jest.spyOn(output, 'showResult')
+    .mockImplementation(msg => console.log(msg));
+
+  jest.spyOn(fileSystem, 'checkFile')
+    .mockImplementation(() => false);
+
+  execute('123.txt', fileSystem, output, null);
 
   //Then
+  const messages = output.showResult.mock.calls[0];
   expect(messages).toEqual(['File does not exist']);
 });
 
 test('Wrong input file', () => {
-  //Mock
-  const fileSystemMock = {
-    checkFile(filePath) {
-      return true;
-    },
-    readFile(filePath) {
-      return 'Wrong input file body';
-    }
-  };
-
   //When
-  execute(['', '', 'input.txt'], fileSystemMock, outputMock);
+  jest.spyOn(output, 'showResult')
+    .mockImplementation(msg => console.log(msg));
+
+  jest.spyOn(fileSystem, 'checkFile')
+    .mockImplementation(() => true);
+  jest.spyOn(fileSystem, 'readFile')
+    .mockImplementation(() => 'Wrong input file body');
+
+  execute(['', '', 'input.txt'], fileSystem, output);
 
   //Then
+  const messages = output.showResult.mock.calls[0];
   expect(messages).toEqual(['Incorrect size']);
 });
 
 test('Final field', () => {
-  //Mock
-  const fileSystemMock = {
-    checkFile(filePath) {
-      return true;
-    },
-    readFile(filePath) {
-      return '7 8\n' +
-        '..p.....\n' +
-        '.ppp....\n' +
-        '..p.....\n' +
-        '........\n' +
-        '...#....\n' +
-        '...#...#\n' +
-        '#..#####';
-    }
-  };
-
   //When
-  execute(['', '', 'input.txt'], fileSystemMock, outputMock);
+  jest.spyOn(output, 'showResult')
+    .mockImplementation(msg => console.log(msg));
+
+  jest.spyOn(fileSystem, 'checkFile')
+    .mockImplementation(() => true);
+  jest.spyOn(fileSystem, 'readFile')
+    .mockImplementation(() => '7 8\n' +
+      '..p.....\n' +
+      '.ppp....\n' +
+      '..p.....\n' +
+      '........\n' +
+      '...#....\n' +
+      '...#...#\n' +
+      '#..#####');
+
+  execute(['', '', 'input.txt'], fileSystem, output);
 
   //Then
+  const messages = output.showResult.mock.calls[0];
   expect(messages).toEqual(['........\n' +
   '........\n' +
   '..p.....\n' +
