@@ -65,6 +65,8 @@ function execute(args, fileSystem, output, withSteps) {
       output.showResult(`STEP ${i + 1}`);
       output.showResult(getOutput(move(fieldOne)));
     }
+
+    writeOutput(fieldTwo);
   } else {
     const field = new Field(
       parsedContent.width,
